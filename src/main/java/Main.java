@@ -19,6 +19,7 @@ public class Main {
             getById(4,connection);
             getById(6,connection);
             System.out.println(delete(connection,1));
+            insertorder(connection,"2021-08-12","done",4);
 
         } catch (SQLException e) {
             e.printStackTrace();
@@ -75,5 +76,23 @@ public class Main {
     public static int delete (Connection connection,int id) throws SQLException{
         Statement statement=connection.createStatement();
         return  statement.executeUpdate("Delete from customers where id="+id);
+    }
+
+    public  static void insertorder(Connection connection,String date,String status ,int customersidid)throws SQLException{
+        try {
+
+
+            getById(customersidid, connection);
+
+
+        PreparedStatement ps=connection.prepareStatement("INSERT INTO orders (order_date,status,custumers_id) values (?,?,?);");
+        ps.setDate(1,Date.valueOf(date));
+        ps.setString(2,status);
+        ps.setInt(3,customersidid);
+        System.out.println(ps.execute());
+    }catch (SQLException e){
+            System.out.println("nu e");
+    }
+
     }
 }
